@@ -1,0 +1,14 @@
+/* Components */
+
+/* Screens */
+@import "screens/addEpisode.css";
+@import "screens/addNewWebtoon.css";
+@import "screens/episodeList.css";
+@import "screens/webtoon.css";
+@import "screens/webtoonList.css";
+
+body {
+  color: #2e363e;
+  padding-top: 30px;
+  font-family: "Open Sans", sans-serif;
+}
