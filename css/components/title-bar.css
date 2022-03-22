@@ -22,7 +22,7 @@
 .title-bar-menu {
   /* title 옆 메뉴 바 */
   display: flex;
-  justify-content: center;
+  justify-content: right;
   font-size: 12px;
 }
 .title-bar-menu div:first-child img {

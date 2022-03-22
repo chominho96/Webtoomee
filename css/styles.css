@@ -1,5 +1,6 @@
 /* Components */
 @import "components/title-bar.css";
+@import "components/single-webtoon.css";
 
 /* Screens */
 @import "screens/addEpisode.css";

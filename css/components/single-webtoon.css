@@ -1,0 +1,19 @@
+.single-webtoon {
+  /* 하나의 웹툰 상세 */
+  text-align: center;
+}
+
+.single-webtoon img:first-child {
+  width: 90px;
+  height: 100px;
+}
+.single-webtoon img:nth-of-type(2) {
+  width: 80px;
+  height: 15px;
+}
+
+.single-webtoon div {
+  /* 웹툰 제목 / 웹툰 작가 / 장르 */
+  font-size: 13px;
+  line-height: 20px;
+}
