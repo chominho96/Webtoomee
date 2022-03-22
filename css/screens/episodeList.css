@@ -1,0 +1,48 @@
+.search-bar-box {
+  /* 검색 바 */
+  display: flex;
+  justify-content: right;
+}
+.episode-list-webtoon-title {
+  /* 해당 웹툰 정보 */
+  margin-top: 100px;
+  display: flex;
+  padding-bottom: 20px;
+  border-bottom: 2px solid black;
+}
+.webtoon-description {
+  /* 해당 웹툰 설명 */
+  text-align: center;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+.webtoon-description img {
+  /* 별점 이미지 */
+  width: 80px;
+  height: 15px;
+}
+.webtoon-description div:first-child {
+  /* 웹툰 제목 / 웹툰 작가 / 장르 / 별점 */
+  line-height: 30px;
+  width: 20%;
+}
+.webtoon-description div:nth-child(2) {
+  /* 줄거리 / 작가의 말(소개) */
+  line-height: 50px;
+  width: 80%;
+}
+.single-episode {
+  /* 회차 */
+  display: flex;
+  margin-top: 50px;
+}
+.single-episode div {
+  /* 회차 정보 */
+  display: flex;
+  font-size: 15px;
+  text-align: center;
+  align-items: center;
+  line-height: 25px;
+  margin-left: 50px;
+}

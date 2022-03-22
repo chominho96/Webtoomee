@@ -9,7 +9,21 @@
   /* title-bar의 모든 직속 div에 대해 33% width를 줌으로써 title-bar을 3등분 */
   width: 33%;
 }
-.title-bar span:first-child {
+.sub-title-box,
+.main-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sub-title-box {
+  justify-content: left;
+}
+.sub-title {
+  /* 홈으로 이동 글귀 */
+  color: coral;
+  font-size: 20px;
+}
+.main-title {
   /* 제목에 대한 css */
   color: coral;
   font-size: 50px;
