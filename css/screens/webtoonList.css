@@ -5,19 +5,15 @@
   margin-bottom: 100px;
 }
 
-.webtoon-list-title {
-  /* 전체 웹툰 / 장르별 웹툰 / 작가별 웹툰 */
-  width: 120px;
-  text-align: center;
-  font-weight: 900;
-  font-size: 20px;
-  border-bottom: 3px solid black;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
 .webtoon-list {
   /* 웹툰 리스트 */
   display: flex;
   justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.rating {
+  /* 별점 */
+  width: 80px;
+  height: 15px;
 }

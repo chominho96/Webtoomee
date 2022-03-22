@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,14 +11,16 @@
     <!-- title-bar -->
     <div class="title-bar">
       <div class="sub-title-box">
-        <span class="sub-title">Webtoomee</span>
+        <a class="sub-title" href="index.html">Webtoomee</a>
       </div>
       <div class="main-title-box">
-        <span class="main-title">웹툰 회차 제목</span>
+        <a class="main-title" href="episodeList.html">웹툰 회차 제목</a>
       </div>
       <div class="title-bar-menu">
         <div>
-          <img src="icons/user.png" />
+          <span
+            ><a href="myPage.html"><img src="icons/user.png" /></a
+          ></span>
           <div>조민호님 <br />관리자</div>
         </div>
       </div>
@@ -39,10 +41,17 @@
 
     <!-- navigation bar -->
     <div class="navigation-bar">
-      <img src="icons/arrow-up-long-solid.svg" />
+      <span
+        ><a href="#"><img src="icons/arrow-up-long-solid.svg" /></a
+      ></span>
       <div>top<br />bottom</div>
-      <img src="icons/arrow-down-long-solid.svg" />
-      <img src="icons/신고.png" />
+      <span
+        ><a href="#bottom"><img src="icons/arrow-down-long-solid.svg" /></a
+      ></span>
+      <button onclick="alert('신고하시겠습니까?');">
+        <img src="icons/신고.png" />
+      </button>
+
       <div>신고</div>
     </div>
     <!-- navigation bar -->
@@ -54,7 +63,7 @@
     <!-- webtoon -->
 
     <!-- review / rating -->
-    <div class="review-and-rating">
+    <div class="review-and-rating" id="bottom">
       <div>해당 회차에 별점을 매겨주세요!</div>
       <div>
         <form>

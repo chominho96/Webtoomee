@@ -1,9 +1,7 @@
-body {
-  height: 1000vh;
-}
 .episode-box {
   /* 해당 회차 */
   padding-left: 15%;
+  margin-bottom: 100px;
 }
 .navigation-bar {
   /* 네비게이션 바 */

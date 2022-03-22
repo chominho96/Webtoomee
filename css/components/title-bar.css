@@ -20,11 +20,13 @@
 }
 .sub-title {
   /* 홈으로 이동 글귀 */
+  text-decoration: none;
   color: coral;
   font-size: 20px;
 }
 .main-title {
   /* 제목에 대한 css */
+  text-decoration: none;
   color: coral;
   font-size: 50px;
 }

@@ -2,6 +2,7 @@
 @import "components/title-bar.css";
 @import "components/single-webtoon.css";
 @import "components/search-bar.css";
+@import "components/underlined-title-box.css";
 
 /* Screens */
 @import "screens/addEpisode.css";
@@ -9,6 +10,8 @@
 @import "screens/episodeList.css";
 @import "screens/webtoon.css";
 @import "screens/webtoonList.css";
+@import "screens/home.css";
+@import "screens/webtoonManagement.css";
 
 body {
   color: #2e363e;
