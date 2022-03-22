@@ -1,0 +1,39 @@
+.title-bar {
+  /* 제목을 가운데 정렬하고 나머지 요소를 오른쪽 정렬 */
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.title-bar > div {
+  /* title-bar의 모든 직속 div에 대해 33% width를 줌으로써 title-bar을 3등분 */
+  width: 33%;
+}
+.title-bar span:first-child {
+  /* 제목에 대한 css */
+  color: coral;
+  font-size: 50px;
+}
+.title-bar img {
+  /* title-bar의 이미지 크기 */
+  width: 50px;
+  height: 50px;
+}
+.title-bar-menu {
+  /* title 옆 메뉴 바 */
+  display: flex;
+  justify-content: center;
+  font-size: 12px;
+}
+.title-bar-menu div:first-child img {
+  /* 프로필 사진 크기 조정 */
+  width: 60px;
+}
+.title-bar-menu > div {
+  /* 메뉴 간 간격 조정 */
+  margin: 10px 30px;
+}
+.title-bar-menu > div > div {
+  /* 메뉴 아이콘과 글자 간 간격 조정 */
+  margin-top: 10px;
+}

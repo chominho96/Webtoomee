@@ -1,4 +1,5 @@
 /* Components */
+@import "components/title-bar.css";
 
 /* Screens */
 @import "screens/addEpisode.css";
@@ -10,5 +11,7 @@
 body {
   color: #2e363e;
   padding-top: 30px;
+  padding-left: 10%;
+  padding-right: 10%;
   font-family: "Open Sans", sans-serif;
 }

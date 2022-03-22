@@ -8,8 +8,44 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
+    <!-- title-bar -->
     <div class="title-bar">
-      <span>Webtoomee</span>
+      <div></div>
+      <div>
+        <span>Webtoomee</span>
+      </div>
+      <div class="title-bar-menu">
+        <div>
+          <img src="icons/user.png" />
+          <div>조민호님 <br />관리자</div>
+        </div>
+        <div>
+          <img src="icons/pen-to-square-solid.svg" />
+          <div>웹툰 관리</div>
+        </div>
+      </div>
     </div>
+    <!-- title-bar -->
+
+    <!-- filter / search bar -->
+    <div class="filter-search-bar">
+      <select name="filter">
+        <option value="">필터</option>
+        <option value="전체 웹툰">전체 웹툰</option>
+        <option value="장르별 웹툰">장르별 웹툰</option>
+        <option value="작가별 웹툰">작가별 웹툰</option>
+      </select>
+
+      <form>
+        <div class="search-bar">
+          <input type="text" placeholder="search..." />
+          <button type="submit">
+            <img src="icons/magnifying-glass-solid.svg" />
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- filter / search bar -->
   </body>
 </html>
