@@ -12,6 +12,7 @@
 @import "screens/webtoonList.css";
 @import "screens/home.css";
 @import "screens/webtoonManagement.css";
+@import "screens/addNewWebtoon.css";
 
 body {
   color: #2e363e;
