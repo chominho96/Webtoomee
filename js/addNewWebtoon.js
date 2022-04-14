@@ -1,6 +1,6 @@
 const addWebtoonForm = document.querySelector(".add-webtoon-form");
 
-function alertInfo() {
+function alertWebtoonInfo() {
   const fileName = document.getElementById("webtoonThumbnail").files[0].name;
   const webtoonTitle = document.getElementById("webtoonTitle").value;
   const webtoonGenre = document.getElementById("webtoonGenre").value;
@@ -26,4 +26,4 @@ function alertInfo() {
   );
 }
 
-addWebtoonForm.addEventListener("submit", alertInfo);
+addWebtoonForm.addEventListener("submit", alertWebtoonInfo);
