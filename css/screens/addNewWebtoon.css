@@ -1,16 +1,16 @@
-.add-webtoon-form {
+.add-webtoon-form-box {
   /* 입력 폼 */
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.add-webtoon-form select {
+.add-webtoon-form-box select {
   margin-bottom: 20px;
   width: 100px;
   height: 30px;
   border-radius: 10px;
 }
-.add-webtoon-form input[type="text"] {
+.add-webtoon-form-box input[type="text"] {
   /* 웹툰 제목 입력 */
   width: 400px;
   height: 30px;
@@ -18,10 +18,10 @@
   border-bottom: 2px solid black;
   margin-bottom: 20px;
 }
-.add-webtoon-form input[type="text"]:focus {
+.add-webtoon-form-box input[type="text"]:focus {
   outline: none;
 }
-.add-webtoon-form textarea {
+.add-webtoon-form-box textarea {
   /* 줄거리, 작가의 말 */
   width: 400px;
   height: 300px;
@@ -30,7 +30,7 @@
   border-radius: 10px;
   margin-bottom: 20px;
 }
-.add-webtoon-form button {
+.add-webtoon-form-box button {
   /* 제출 버튼 */
   width: 70px;
   height: 30px;
