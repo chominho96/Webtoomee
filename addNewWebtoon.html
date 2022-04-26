@@ -28,12 +28,17 @@
     <!-- title-bar -->
 
     <!-- add webtoon form -->
+<<<<<<< HEAD
     <form
       method="post"
       enctype="multipart/form-data"
       action="addNewWebtoon.jsp"
     >
       <div class="add-webtoon-form">
+=======
+    <form method="post" enctype="multipart/form-data" class="add-webtoon-form">
+      <div class="add-webtoon-form-box">
+>>>>>>> main
         <div class="image-input">
           <label for="webtoonThumbnail"
             ><img src="icons/image-regular.svg"
@@ -52,7 +57,7 @@
           <div class="webtoon-info-input-title">웹툰 제목</div>
           <input type="text" id="webtoonTitle" name="webtoonTitle" required />
           <div class="webtoon-info-input-title">장르</div>
-          <select name="webtoonGenre">
+          <select name="webtoonGenre" id="webtoonGenre">
             <option value="daily">일상</option>
             <option value="comedy">개그</option>
             <option value="fantasy">판타지</option>
@@ -61,12 +66,19 @@
           <div class="webtoon-info-input-title">줄거리</div>
           <textarea
             name="webtoonSummary"
+            id="webtoonSummary"
             cols="55"
             rows="10"
             required
           ></textarea>
           <div class="webtoon-info-input-title">작가의 말</div>
-          <textarea name="authorWord" cols="55" rows="10" required></textarea>
+          <textarea
+            name="authorWord"
+            id="authorWord"
+            cols="55"
+            rows="10"
+            required
+          ></textarea>
           <div class="submit-box">
             <button type="submit">저장</button>
           </div>
@@ -75,5 +87,7 @@
     </form>
 
     <!-- add webtoon form -->
+
+    <script src="js/addNewWebtoon.js"></script>
   </body>
 </html>
