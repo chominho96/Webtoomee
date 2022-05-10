@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <% request.setCharacterEncoding("utf-8"); String stitle =
-request.getParameter("webtoonTitle"); String sgenre =
-request.getParameter("webtoonGenre"); String ssummary =
-request.getParameter("webtoonSummary"); String sauthorWord =
-request.getParameter("authorWord"); // TODO : 저자의 경우 로그인된 회원을
-이용하여 가져옵니다. // TODO : 파일 업로드 %>
+pageEncoding="UTF-8"%> <% request.setCharacterEncoding("utf-8"); // TODO :
+저자의 경우 로그인된 회원을 이용하여 가져옵니다. // TODO : 파일 업로드 %>
+
+<jsp:useBean id="addWebtoonForm" class="newWebtoon.AddWebtoonForm" />
+<jsp:setProperty name="addWebtoonForm" property="*" />
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -60,14 +59,23 @@ request.getParameter("authorWord"); // TODO : 저자의 경우 로그인된 회�
       <img src="images/웹툰 썸네일1.png" />
       <div class="webtoon-description">
         <div>
-          <%=stitle %><br />
+          <jsp:getProperty
+            name="addWebtoonForm"
+            property="webtoonTitle"
+          /><br />
           조민호<br />
-          <%=sgenre %><br />
+          <jsp:getProperty
+            name="addWebtoonForm"
+            property="webtoonGenre"
+          /><br />
           <span><img src="icons/별점0.png" /> 0.0</span>
         </div>
         <div>
-          <%=ssummary %><br />
-          <%=sauthorWord %>
+          <jsp:getProperty
+            name="addWebtoonForm"
+            property="webtoonSummary"
+          /><br />
+          <jsp:getProperty name="addWebtoonForm" property="authorWord" />
         </div>
       </div>
     </div>
