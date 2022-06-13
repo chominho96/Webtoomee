@@ -1,29 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" import="java.sql.*" %>
+<%@ page import="com.example.db_connect.DbConnect" %>
+<%@ page import="com.example.login.LoginUser" %>
+<%@ page import="com.example.user.User" %>
 
 <%
     ResultSet bestWebtoonRS = null;
     ResultSet risingWebtoonRS = null;
-    String loginUserId = null;
     String loginUserName = null;
     String loginUserType = null;
+    boolean isLogin = false;
 
     try {
-        Class.forName("org.mariadb.jdbc.Driver");
-
-        // TODO : 이름 변경
-        //String DB_URL = "jdbc:mariadb://localhost:3306/webtoon?useSSL=false";
-        String DB_URL = "jdbc:mariadb://localhost:3307/webtoon?useSSL=false";
-
-        // TODO : 이름 변경
-        //String DB_USER = "admin";
-        //String DB_PASSWORD= "1234";
-        String DB_USER = "root";
-        String DB_PASSWORD= "whalsgh9664!";
-        // TODO : 이름 변경
-
-        Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); // 연결자 획득
+        Connection con = DbConnect.dbConnect();
         Statement stmt = con.createStatement(); // Statement 객체 생성
-
 
         /**
          * 주요 인기 웹툰 쿼리
@@ -47,51 +36,38 @@
                 "order by created_at desc, rating limit 10 ";
         risingWebtoonRS = stmt.executeQuery(risingWebtoonQuery);
 
+
         /**
          *  현재 로그인된 사용자 조회
          *  로그인된 사용자 정보는 쿠키에 UUID의 형식으로 저장
          */
-        Cookie[] cookies = request.getCookies();
-        if (cookies.length != 0) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("id")) {
-                    loginUserId = cookie.getValue();
-                }
-            }
-        }
-
-        if (loginUserId != null) {
-            // 사용자 ID
-            loginUserId = (String) session.getAttribute(loginUserId);
-
-            // 사용자 이름
-            // 로그인된 사용자 정보 쿼리
-            String loginUserQuery = "select user_name, user_type from user where user_id = ?";
-            PreparedStatement pstmt = con.prepareStatement(loginUserQuery);
-            pstmt.setString(1, loginUserId);
-            ResultSet loginUserRS = pstmt.executeQuery();
-            loginUserName = loginUserRS.getString("user_name");
-
-            // 사용자 분류 결정
-            loginUserType = loginUserRS.getString("user_type");
-            if (loginUserType.equals("admin")) {
-                loginUserType = "관리자";
-            }
-            else if (loginUserType.equals("author")) {
-                loginUserType = "웹툰 작가";
-            }
-            else {
-                // 일반 사용자는 표시하지 않음
-                loginUserType = "";
-            }
-        }
-        else {
-            // 로그인하지 않은 경우
+        Integer loginUserId = LoginUser.getLoginUser(request, session);
+        if (loginUserId == null) {
             loginUserName = "로그인";
             loginUserType = "";
         }
+        else {
+            User findUser = User.findUser(loginUserId);
+            if (findUser == null) {
+                loginUserName = "로그인";
+                loginUserType = "";
+            }
+            else {
+                isLogin = true;
+                loginUserName = findUser.getUserName() + "님";
+                if (findUser.getUserType().equals("admin")) {
+                    loginUserType = "관리자";
+                }
+                else if (findUser.getUserType().equals("author")) {
+                    loginUserType = "웹툰 작가";
+                }
+                else {
+                    // 일반 사용자는 표시하지 않음
+                    loginUserType = "";
+                }
+            }
 
-
+        }
 
 %>
 
@@ -113,22 +89,37 @@
     <div class="title-bar-menu">
         <div>
           <span>
-              <% if (loginUserId == null) { %>
+              <% if (!isLogin) { %>
               <a href="login.jsp">
               <% }
                  else {%>
-              <a href="myPage.jsp"><%} %>
-              <img src="icons/user.png" /></a
-          ></span>
+              <a href="myPage.jsp"> <%} %>
+              <img src="icons/user.png" /></a>
+          </span>
             <div><%=loginUserName%> <br /><%=loginUserType%></div>
+            <% if (isLogin) { %>
+            <a href="logout.jsp" style="color: cadetblue; text-decoration: none;">로그아웃</a>
+            <% } %>
         </div>
+        <%
+            if (loginUserType.equals("웹툰 작가") || loginUserType.equals("관리자")) {
+        %>
         <div>
           <span
-          ><a href="webtoonManagement.html"
+          ><a href="webtoonManagement.jsp"
           ><img src="icons/pen-to-square-solid.svg" /></a
           ></span>
             <div>웹툰 관리</div>
         </div>
+        <%
+            }
+            else {
+        %>
+        <div></div>
+        <%
+            }
+        %>
+
     </div>
 </div>
 <!-- title-bar -->
@@ -136,7 +127,7 @@
 <!-- navigation / search bar -->
 <div class="navigation-search-bar">
     <div>
-        <span><a href="index.html">홈</a></span>
+        <span><a href="index.jsp">홈</a></span>
         <span><a href="webtoonList.html">전체 웹툰</a></span>
         <span><a href="webtoonList.html">장르별 웹툰</a></span>
         <span><a href="webtoonList.html">작가별 웹툰</a></span>
@@ -209,6 +200,6 @@
     }
 
     catch (Exception e) {
-    throw new RuntimeException(e);
+    e.printStackTrace();
 }
 %>

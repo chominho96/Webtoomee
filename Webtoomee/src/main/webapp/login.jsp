@@ -26,7 +26,7 @@
                 <input type="text" id="loginId" name="loginId" required />
 
                 <h2>비밀번호 / Password</h2>
-                <input type="text" id="password" name="password" required />
+                <input type="password" id="password" name="password" required />
                 <br>
                 <input type="submit" class="login-submit" value="로그인" />
             </div>

@@ -1,5 +1,13 @@
 .login-input input[type="text"] {
-    /* 웹툰 제목 입력 */
+    /* 입력창 */
+    width: 400px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+}
+.login-input input[type="password"] {
+    /* 입력창 */
     width: 400px;
     height: 30px;
     border: none;
@@ -7,6 +15,9 @@
     margin-bottom: 20px;
 }
 .login-input input[type="text"]:focus {
+    outline: none;
+}
+.login-input input[type="password"]:focus {
     outline: none;
 }
 .login-submit {
