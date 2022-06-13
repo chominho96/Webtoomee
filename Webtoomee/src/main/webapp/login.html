@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body></body>
+  <body>
+    <!-- title-bar -->
+    <div class="title-bar">
+      <div class="sub-title-box">
+        <a class="sub-title" href="index.html">Webtoomee</a>
+      </div>
+      <div class="main-title-box">
+        <a class="main-title" href="episodeList.html">로그인</a>
+      </div>
+      <div></div>
+    </div>
+    <!-- title-bar -->
+    <div class="login-input-box">
+      <form method="post" action="login_do.jsp">
+        <div class="login-input">
+          <h2>아이디 / ID</h2>
+          <input type="text" id="loginId" name="loginId" required />
+
+          <h2>비밀번호 / Password</h2>
+          <input type="text" id="password" name="password" required />
+
+          <span>Webtoomee에 처음 방문하셨나요?</span>
+          <input type="submit" class="login-submit" value="회원가입" />
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

@@ -112,13 +112,8 @@
     </div>
     <div class="title-bar-menu">
         <div>
-          <span>
-              <% if (loginUserId == null) { %>
-              <a href="login.jsp">
-              <% }
-                 else {%>
-              <a href="myPage.jsp"><%} %>
-              <img src="icons/user.png" /></a
+          <span
+          ><a href="myPage.html"><img src="icons/user.png" /></a
           ></span>
             <div><%=loginUserName%> <br /><%=loginUserType%></div>
         </div>

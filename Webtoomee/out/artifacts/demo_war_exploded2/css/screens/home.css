@@ -1,0 +1,28 @@
+.navigation-search-bar {
+  /* 네비게이션 / 필터 바 */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+}
+.navigation-search-bar span {
+  padding-right: 20px;
+  padding-left: 20px;
+  border-right: 2px solid black;
+}
+.navigation-search-bar span:first-child {
+  border-left: 2px solid black;
+}
+.navigation-search-bar a {
+  text-decoration: none;
+  color: black;
+}
+
+.index-webtoon-list-title {
+  width: 200px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 20px;
+  border-bottom: 3px solid black;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}

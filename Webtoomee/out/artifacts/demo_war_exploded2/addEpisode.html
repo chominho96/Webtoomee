@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Episode</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- title-bar -->
+    <div class="title-bar">
+      <div class="sub-title-box">
+        <a class="sub-title" href="index.html">Webtoomee</a>
+      </div>
+      <div class="main-title-box">
+        <a class="main-title" href="addEpisode.html">웹툰 연재/수정</a>
+      </div>
+      <div class="title-bar-menu">
+        <div>
+          <span
+            ><a href="myPage.html"><img src="icons/user.png" /></a
+          ></span>
+          <div>조민호님 <br />웹툰 작가</div>
+        </div>
+      </div>
+    </div>
+    <!-- title-bar -->
+
+    <!-- add episode form -->
+    <div class="episode-list-webtoon-title">
+      <img src="images/웹툰 썸네일1.png" />
+      <div class="webtoon-description">
+        <div>
+          웹툰 제목<br />
+          웹툰 작가<br />
+          장르
+        </div>
+      </div>
+    </div>
+    <form method="post" enctype="multipart/form-data" action="addEpisode.jsp">
+      <div class="add-webtoon-form">
+        <div class="image-input">
+          <label for="episodeThumbnail"
+            ><img src="icons/image-regular.svg"
+          /></label>
+          <input
+            type="file"
+            id="episodeThumbnail"
+            name="episodeThumbnail"
+            accept="image/*"
+            onchange="loadFile(this)"
+          />
+          <div>회차 썸네일을 등록하세요.</div>
+        </div>
+
+        <div class="image-input">
+          <label for="webtoonFile"><img src="icons/image-regular.svg" /></label>
+          <input
+            type="file"
+            id="webtoonFile"
+            name="webtoonFile"
+            accept="image/*"
+            onchange="loadFile(this)"
+          />
+          <div>웹툰 파일을 등록하세요.</div>
+        </div>
+
+        <div class="webtoon-info-input">
+          <div class="webtoon-info-input-title">회차 제목</div>
+          <input type="text" id="episodeTitle" name="episodeTitle" required />
+
+          <div class="submit-box">
+            <button type="submit">저장</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- add episode form -->
+  </body>
+</html>

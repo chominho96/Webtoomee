@@ -13,8 +13,6 @@
 @import "screens/home.css";
 @import "screens/webtoonManagement.css";
 @import "screens/addNewWebtoon.css";
-@import "screens/login.css";
-@import "screens/idDuplicateCheck.css";
 
 body {
   color: #2e363e;

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <% request.setCharacterEncoding("utf-8");
-// TODO :저자의 경우 로그인된 회원을 이용하여 가져옵니다. // TODO : 파일 업로드 %>
+pageEncoding="UTF-8"%> <% request.setCharacterEncoding("utf-8"); // TODO :
+저자의 경우 로그인된 회원을 이용하여 가져옵니다. // TODO : 파일 업로드 %>
 
 <jsp:useBean id="addWebtoonForm" class="newWebtoon.AddWebtoonForm" />
 <jsp:setProperty name="addWebtoonForm" property="*" />

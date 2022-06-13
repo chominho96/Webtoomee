@@ -1,0 +1,19 @@
+.filter-search-bar {
+  /* 검색 / 필터 바 */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+}
+
+.webtoon-list {
+  /* 웹툰 리스트 */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.rating {
+  /* 별점 */
+  width: 80px;
+  height: 15px;
+}
