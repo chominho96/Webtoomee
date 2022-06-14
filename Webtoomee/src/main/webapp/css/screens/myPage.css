@@ -1,0 +1,30 @@
+#my-page-delete-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 60%;
+}
+#my-page-delete-box button {
+    border: none;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: hotpink;
+}
+#my-page-box {
+    display: flex;
+    justify-content: center;
+
+}
+.my-page-inner-box {
+    width: 800px;
+    height: 800px;
+}
+
+#my-page-box:first-child {
+    display: flex;
+    flex-direction: column;
+}
+#my-page-box:nth-child(2):first-child {
+    height: 500px;
+}

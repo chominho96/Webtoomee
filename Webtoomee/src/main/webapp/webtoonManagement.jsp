@@ -63,7 +63,7 @@
 <!-- add new webtoon -->
 <div class="add-new-webtoon-bar">
       <span
-      ><a href="addNewWebtoon_temp.jsp"
+      ><a href="addNewWebtoon.jsp"
       ><img src="icons/circle-plus-solid.svg" /></a
       ></span>
     <span>새 웹툰 연재 시작하기</span>
@@ -77,12 +77,12 @@
 <!-- webtoon title -->
 <%
     for (Webtoon webtoon : allWebtoon) {
-        Double rating = Webtoon.getRating(webtoon.getWebtoonid());
+        Double rating = Webtoon.getRating(webtoon.getWebtoonId());
 %>
 <div class="webtoon-management-title">
       <span
-      ><a href="episodeManagement.jsp?id="
-      ><img src="images/<%=webtoon.getWebtoonThumbnailAddr()%>>" /></a
+      ><a href="episodeManagement.jsp?id=<%=webtoon.getWebtoonId()%>"
+      ><img width="100" height="100" src="./images/<%=webtoon.getWebtoonFileName()%>" /></a
       ></span>
     <div class="webtoon-management-description-box">
         <div class="webtoon-management-description">
@@ -95,13 +95,13 @@
         <div class="add-edit-bar">
             <div>
                 <div>
-                    <a href="addEpisode.jsp?id=<%=webtoon.getWebtoonid()%>"><img src="icons/plus-solid.svg" /></a>
+                    <a href="addEpisode.jsp?id=<%=webtoon.getWebtoonId()%>"><img src="icons/plus-solid.svg" /></a>
                 </div>
                 <div>회차 연재</div>
             </div>
             <div>
                 <div>
-                    <a href="addNewWebtoon_temp.jsp"><img src="icons/pen-solid.svg" /></a>
+                    <a href="addNewWebtoon.jsp?id=<%=webtoon.getWebtoonId()%>"><img src="icons/pen-solid.svg" /></a>
                 </div>
                 <div>정보 수정</div>
             </div>
@@ -109,7 +109,7 @@
                 <button
                         onclick="
                         if(confirm('해당 웹툰을 삭제하시겠습니까?')) {
-                            location.href='deleteWebtoon.jsp?id=<%=webtoon.getWebtoonid()%>';
+                            location.href='deleteWebtoon.jsp?id=<%=webtoon.getWebtoonId()%>';
                         }
                         ">
                     <img src="icons/trash-can-solid.svg" />

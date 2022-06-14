@@ -8,10 +8,10 @@
 <!-- title-bar -->
 <div class="title-bar">
     <div class="sub-title-box">
-        <a class="sub-title" href="index.html">Webtoomee</a>
+        <a class="sub-title" href="index.jsp">Webtoomee</a>
     </div>
     <div class="main-title-box">
-        <a class="main-title" href="episodeList.html">회원 가입</a>
+        <a class="main-title" href="signUp.jsp">회원 가입</a>
     </div>
     <div>
     </div>

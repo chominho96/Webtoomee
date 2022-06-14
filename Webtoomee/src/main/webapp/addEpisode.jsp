@@ -1,97 +1,132 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <% request.setCharacterEncoding("utf-8"); // TODO : 파일
-업로드 %>
+<%@ page import="com.example.login.LoginUser" %>
+<%@ page import="com.example.user.User" %>
+<%@ page import="com.example.webtoon.Webtoon" %>
+<%@ page import="com.example.webtoon.Episode" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Integer loginUserId = LoginUser.getLoginUser(request, session);
+    if (loginUserId == null) {
+        %>
+        <script>
+            alert("잘못된 접근입니다");
+            location.href="index.jsp";
+        </script>
+<%
+    }
+    User findUser = User.findUser(loginUserId);
+    if (findUser == null) {
+%>
+        <script>
+            alert("잘못된 접근입니다");
+            location.href="index.jsp";
+        </script>
+<%
+    }
 
-<jsp:useBean id="addEpisodeForm" class="newEpisode.AddEpisodeForm" />
-<jsp:setProperty name="addEpisodeForm" property="*" />
+    Integer webtoonId = Integer.parseInt(request.getParameter("id"));
+    Webtoon findWebtoon = Webtoon.findById(webtoonId);
 
-<!DOCTYPE html>
+    Integer episodeId = null;
+    boolean isRevised = false;
+    // 수정인 경우 확인
+    try {
+        episodeId = Integer.parseInt(request.getParameter("epi_id"));
+        isRevised = true;
+    }
+    catch (Exception ignored) { }
+
+
+
+%>
+
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>webtoon</title>
+<head>
+    <title>회차 연재</title>
     <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <!-- title-bar -->
-    <div class="title-bar">
-      <div class="sub-title-box">
-        <a class="sub-title" href="index.html">Webtoomee</a>
-      </div>
-      <div class="main-title-box">
-        <a class="main-title" href="episodeList.html">웹툰 회차 제목</a>
-      </div>
-      <div class="title-bar-menu">
+</head>
+<body>
+<!-- title-bar -->
+<div class="title-bar">
+    <div class="sub-title-box">
+        <a class="sub-title" href="index.jsp">Webtoomee</a>
+    </div>
+    <div class="main-title-box">
+        <span class="main-title">웹툰 연재/수정</span>
+    </div>
+    <div class="title-bar-menu">
         <div>
           <span
-            ><a href="myPage.html"><img src="icons/user.png" /></a
+          ><a href="myPage.jsp"><img src="icons/user.png" /></a
           ></span>
-          <div>조민호님 <br />관리자</div>
+            <div><%=findUser.getUserName()%>님 <br />웹툰 작가</div>
         </div>
-      </div>
     </div>
-    <!-- title-bar -->
+</div>
+<!-- title-bar -->
 
-    <!-- episode -->
-    <div class="episode-box">
-      <div class="single-episode">
-        <img src="images/회차 썸네일.png" />
+<!-- add episode form -->
+<div class="episode-list-webtoon-title">
+    <img width="125" height="137" src="./images/<%=findWebtoon.getWebtoonFileName()%>" />
+    <div class="webtoon-description">
         <div>
-          <jsp:getProperty
-            name="addEpisodeForm"
-            property="episodeTitle"
-          /><br />
-          등록일 :
-          <jsp:getProperty name="addEpisodeForm" property="currentTime" /><br />
+            <%=findWebtoon.getWebtoonTitle()%><br />
+            <%=findUser.getUserName()%><br />
+            <%=findWebtoon.getWebtoonGenre()%>
         </div>
-      </div>
     </div>
-    <!-- episode -->
+</div>
+<form method="post" enctype="multipart/form-data" action="addEpisode_do.jsp">
+    <div class="add-webtoon-form">
+        <div class="image-input">
+            <label for="episodeThumbnail">
+                <img src="icons/image-regular.svg"/>
+            </label>
+            <input
+                    type="file"
+                    id="episodeThumbnail"
+                    name="episodeThumbnail"
+                    accept="image/*"
+            />
+            <div>회차 썸네일을 등록하세요.</div>
+        </div>
 
-    <!-- navigation bar -->
-    <div class="navigation-bar">
-      <span
-        ><a href="#"><img src="icons/arrow-up-long-solid.svg" /></a
-      ></span>
-      <div>top<br />bottom</div>
-      <span
-        ><a href="#bottom"><img src="icons/arrow-down-long-solid.svg" /></a
-      ></span>
-      <button onclick="alert('신고하시겠습니까?');">
-        <img src="icons/신고.png" />
-      </button>
+        <div class="image-input">
+            <label for="webtoonFile"><img src="icons/image-regular.svg" /></label>
+            <input
+                    type="file"
+                    id="webtoonFile"
+                    name="webtoonFile"
+                    accept="image/*"
+            />
+            <div>웹툰 파일을 등록하세요.</div>
+        </div>
 
-      <div>신고</div>
+        <div class="webtoon-info-input">
+            <div class="webtoon-info-input-title">회차 제목</div>
+            <input
+                    type="text"
+                    id="episodeTitle"
+                    name="episodeTitle"
+                    required
+                    value="<%if (isRevised) {%><%=com.example.webtoon.Episode.findById(episodeId).getEpisodeTitle()%><%}%>"/>
+            <input type="text" id="webtoonId" name="webtoonId" value="<%=webtoonId%>" hidden />
+            <%
+                // 수정된 경우
+                if (isRevised) {
+                    %>
+                    <input type="text" id="episodeId" name="episodeId" value="<%=episodeId%>" hidden />
+            <%
+                }
+            %>
+
+            <div class="submit-box">
+                <input type="submit" value="저장"/>
+            </div>
+        </div>
     </div>
-    <!-- navigation bar -->
+</form>
 
-    <!-- webtoon -->
-    <div class="webtoon-main">
-      <img src="images/웹툰.png" />
-    </div>
-    <!-- webtoon -->
-
-    <!-- review / rating -->
-    <div class="review-and-rating" id="bottom">
-      <div>해당 회차에 별점을 매겨주세요!</div>
-      <div>
-        <form>
-          <input type="radio" id="star-1" name="star-1" value="★" />
-          <label for="star-1">★</label>
-          <input type="radio" id="star-2" name="star-2" value="★★" />
-          <label for="star-2">★★</label>
-          <input type="radio" id="star-3" name="star-3" value="★★★" />
-          <label for="star-3">★★★</label>
-          <input type="radio" id="star-4" name="star-4" value="★★★★" />
-          <label for="star-4">★★★★</label>
-          <input type="radio" id="star-5" name="star-5" value="★★★★★" />
-          <label for="star-5">★★★★★</label>
-          <button type="submit">✔</button>
-        </form>
-      </div>
-    </div>
-    <!-- review / rating -->
-  </body>
+<!-- add episode form -->
+</body>
 </html>
+

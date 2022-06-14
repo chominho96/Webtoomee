@@ -19,8 +19,8 @@
          * 평균 평점 순으로 10개
          *
          */
-        String bestWebtoonQuery = "SELECT wtn_id, wtn_title, (select user_name from user where user_id=T.wtn_author) as 'name', wtn_genre, " +
-                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating' " +
+        String bestWebtoonQuery = "SELECT wtn_id, wtn_title, (select user_name from user where user_id=T.wtn_author) as 'author', wtn_genre, " +
+                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating', wtn_thb " +
                 "FROM webtoon T " +
                 "order by rating limit 10";
         bestWebtoonRS = stmt.executeQuery(bestWebtoonQuery);
@@ -30,7 +30,7 @@
          * 평균 평점이 4점 이상인 웹툰 중 최근에 연재를 시작한 순, 평균 평점이 높은 순으로 10개
          */
         String risingWebtoonQuery = "SELECT wtn_title, (select user_name from user where user_id=T.wtn_author) as 'name', wtn_genre, " +
-                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating' " +
+                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating', wtn_thb " +
                 "FROM webtoon T " +
                 "where (select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) > 4 " +
                 "order by created_at desc, rating limit 10 ";
@@ -84,7 +84,7 @@
 <div class="title-bar">
     <div class="sub-title-box"></div>
     <div class="main-title-box">
-        <a class="main-title" href="index.html">Webtoomee</a>
+        <a class="main-title" href="index.jsp">Webtoomee</a>
     </div>
     <div class="title-bar-menu">
         <div>
@@ -128,9 +128,9 @@
 <div class="navigation-search-bar">
     <div>
         <span><a href="index.jsp">홈</a></span>
-        <span><a href="webtoonList.html">전체 웹툰</a></span>
-        <span><a href="webtoonList.html">장르별 웹툰</a></span>
-        <span><a href="webtoonList.html">작가별 웹툰</a></span>
+        <span><a href="webtoonList.jsp">전체 웹툰</a></span>
+        <span><a href="webtoonList.jsp?by=genre">장르별 웹툰</a></span>
+        <span><a href="webtoonList.jsp?by=author">작가별 웹툰</a></span>
     </div>
 
     <form>
@@ -158,10 +158,14 @@
 
 <div class="webtoon-list">
     <div class="single-webtoon">
-        <span
-        ><a href="episodeList.html?episode=<%=bestWebtoonRS.getInt("wtn_id")%>"><img src="images/웹툰 썸네일1.png" /></a
-        ></span>
-        <div><%=bestWebtoonRS.getString("wtn_title")%>><br /><%=bestWebtoonRS.getString("author")%><br /><%=bestWebtoonRS.getString("wtn_genre")%></div>
+        <span>
+            <a href="episodeList.jsp?id=<%=bestWebtoonRS.getInt("wtn_id")%>">
+                <img width="125" height="137" src="./images/<%=bestWebtoonRS.getString("wtn_thb")%>" />
+            </a>
+        </span>
+        <div>
+            <%=bestWebtoonRS.getString("wtn_title")%><br /><%=bestWebtoonRS.getString("author")%><br /><%=bestWebtoonRS.getString("wtn_genre")%>
+        </div>
         <img class="rating" src="icons/별점.png" />
     </div>
 </div>
@@ -179,10 +183,14 @@
 
 <div class="webtoon-list">
     <div class="single-webtoon">
-        <span
-        ><a href="episodeList.html?episode=<%=risingWebtoonRS.getInt("wtn_id")%>"><img src="images/웹툰 썸네일1.png" /></a
-        ></span>
-        <div><%=risingWebtoonRS.getString("wtn_title")%>><br /><%=risingWebtoonRS.getString("author")%><br /><%=risingWebtoonRS.getString("wtn_genre")%></div>
+        <span>
+            <a href="episodeList.jsp?id=<%=risingWebtoonRS.getInt("wtn_id")%>">
+                <img width="125" height="137" src="./images/<%=risingWebtoonRS.getString("wtn_thb")%>" />
+            </a>
+        </span>
+        <div>
+            <%=risingWebtoonRS.getString("wtn_title")%><br /><%=risingWebtoonRS.getString("author")%><br /><%=risingWebtoonRS.getString("wtn_genre")%>
+        </div>
         <img class="rating" src="icons/별점.png" />
     </div>
 </div>

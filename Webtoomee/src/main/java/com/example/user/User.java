@@ -1,12 +1,15 @@
 package com.example.user;
 
 import com.example.db_connect.DbConnect;
+import com.example.webtoon.Webtoon;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private Integer userId;
@@ -75,9 +78,33 @@ public class User {
 
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
 
     }
+
+    public static List<User> findAllAuthor() {
+        try {
+            List<User> result = new ArrayList<>();
+
+            Connection connection = DbConnect.dbConnect();
+            String query = "select * from user where user_type='author'";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                result.add(new User(rs.getInt("user_id"), rs.getString("user_type"),
+                        rs.getString("user_name"), rs.getString("user_login_id"),
+                        rs.getString("user_pwd"), rs.getString("created_at")));
+            }
+
+            connection.close();
+            return result;
+
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
 }

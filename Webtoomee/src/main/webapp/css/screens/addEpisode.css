@@ -1,0 +1,23 @@
+.add-webtoon-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add-webtoon-form input[type="text"] {
+    /* 회차 제목 입력 */
+    width: 400px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+}
+.add-webtoon-form input[type="submit"] {
+    /* 제출 버튼 */
+    border: none;
+    width: 70px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #007a03;
+    opacity: 0.8;
+}
+

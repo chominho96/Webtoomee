@@ -14,7 +14,7 @@ public class Episode {
 
     Integer episodeId;
     Integer webtoonId;
-    String webtoonTitle;
+    String episodeTitle;
     String episodeThumbnail;
     String episodeFile;
     LocalDateTime createdAt;
@@ -27,8 +27,8 @@ public class Episode {
         return webtoonId;
     }
 
-    public String getWebtoonTitle() {
-        return webtoonTitle;
+    public String getEpisodeTitle() {
+        return episodeTitle;
     }
 
     public String getEpisodeThumbnail() {
@@ -47,7 +47,7 @@ public class Episode {
                    String episodeFile, String createdAt) {
         this.episodeId = episodeId;
         this.webtoonId = webtoonId;
-        this.webtoonTitle = webtoonTitle;
+        this.episodeTitle = webtoonTitle;
         this.episodeThumbnail = episodeThumbnail;
         this.episodeFile = episodeFile;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -72,6 +72,46 @@ public class Episode {
 
             connection.close();
             return result;
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static Double getRating (Integer episodeId) {
+        try {
+            Connection connection = DbConnect.dbConnect();
+            String query = "select ifnull(avg(rt_score), 0) as 'rating' from rating where epi_id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, episodeId);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            double result = rs.getDouble("rating");
+
+            connection.close();
+            return result;
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Episode findById (Integer episodeId) {
+        try {
+            Connection connection = DbConnect.dbConnect();
+            String query = "select * from episode where epi_id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, episodeId);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            Episode episode = new Episode(episodeId, rs.getInt("wtn_id"), rs.getString("epi_title"),
+                    rs.getString("epi_thb"), rs.getString("epi_file"), rs.getString("created_at"));
+
+            connection.close();
+            return episode;
 
         }
         catch (Exception e) {

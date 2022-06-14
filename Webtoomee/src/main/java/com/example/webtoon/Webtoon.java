@@ -9,7 +9,10 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.DoubleBinaryOperator;
 
 public class Webtoon {
     private Integer webtoonid;
@@ -21,7 +24,7 @@ public class Webtoon {
     private String webtoonAuthorWord;
     private LocalDateTime createdAt;
 
-    public Integer getWebtoonid() {
+    public Integer getWebtoonId() {
         return webtoonid;
     }
 
@@ -33,7 +36,7 @@ public class Webtoon {
         return webtoonTitle;
     }
 
-    public String getWebtoonThumbnailAddr() {
+    public String getWebtoonFileName() {
         return webtoonThumbnailAddr;
     }
 
@@ -115,6 +118,121 @@ public class Webtoon {
         }
         catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Webtoon findById (Integer webtoonId) {
+        try {
+            Connection connection = DbConnect.dbConnect();
+            String query = "select * from webtoon where wtn_id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, webtoonId);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+
+            return new Webtoon(webtoonId, rs.getInt("wtn_author"), rs.getString("wtn_title"),
+                    rs.getString("wtn_thb"), rs.getString("wtn_genre"),
+                    rs.getString("wtn_summ"), rs.getString("wtn_auth_word"),
+                    rs.getString("created_at"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Webtoon> findAll() {
+        try {
+            List<Webtoon> result = new ArrayList<>();
+
+            Connection connection = DbConnect.dbConnect();
+            String query = "select * from webtoon";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                result.add(new Webtoon(rs.getInt("wtn_id"), rs.getInt("wtn_author"), rs.getString("wtn_title"),
+                        rs.getString("wtn_thb"), rs.getString("wtn_genre"),
+                        rs.getString("wtn_summ"), rs.getString("wtn_auth_word"),
+                        rs.getString("created_at")));
+            }
+
+            connection.close();
+            return result;
+
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Map<String, List<Webtoon>> findByGenre() {
+        try {
+            Map<String, List<Webtoon>> resultMap = new HashMap<>();
+            String[] genreList = { "daily", "comic", "fantasy", "action" };
+
+            Connection connection = DbConnect.dbConnect();
+            for (int i = 0; i < genreList.length; i++) {
+                List<Webtoon> result = new ArrayList<>();
+
+                String query = "select * from webtoon where wtn_genre=?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setString(1, genreList[i]);
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    result.add(new Webtoon(rs.getInt("wtn_id"), rs.getInt("wtn_author"),
+                            rs.getString("wtn_title"), rs.getString("wtn_thb"),
+                            rs.getString("wtn_genre"), rs.getString("wtn_summ"),
+                            rs.getString("wtn_auth_word"), rs.getString("created_at")));
+                }
+                resultMap.put(genreList[i], result);
+
+            }
+
+            connection.close();
+            return resultMap;
+
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Map<Integer, List<Webtoon>> findByAuthor() {
+        try {
+            Map<Integer, List<Webtoon>> resultMap = new HashMap<>();
+            List<User> authorList = User.findAllAuthor();
+
+            Connection connection = DbConnect.dbConnect();
+            if (authorList != null) {
+                for (User author : authorList) {
+                    List<Webtoon> result = new ArrayList<>();
+
+                    String query = "select * from webtoon where wtn_author=?";
+                    PreparedStatement pstmt = connection.prepareStatement(query);
+                    pstmt.setInt(1, author.getUserId());
+                    ResultSet rs = pstmt.executeQuery();
+
+                    while (rs.next()) {
+                        result.add(new Webtoon(rs.getInt("wtn_id"), rs.getInt("wtn_author"),
+                                rs.getString("wtn_title"), rs.getString("wtn_thb"),
+                                rs.getString("wtn_genre"), rs.getString("wtn_summ"),
+                                rs.getString("wtn_auth_word"), rs.getString("created_at")));
+                    }
+                    resultMap.put(author.getUserId(), result);
+                }
+            }
+            else {
+                return null;
+            }
+
+            connection.close();
+            return resultMap;
+
+        }
+        catch (Exception e) {
             return null;
         }
     }

@@ -1,0 +1,17 @@
+#error-h1 {
+    size: 30px
+}
+#error-btn {
+    width: 300px;
+    height: 50px;
+    border-radius: 10px;
+    size: 20px;
+    border: none;
+    background-color: antiquewhite;
+}
+#error-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

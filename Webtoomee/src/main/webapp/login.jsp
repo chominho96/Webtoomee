@@ -9,10 +9,10 @@
 <!-- title-bar -->
 <div class="title-bar">
     <div class="sub-title-box">
-        <a class="sub-title" href="index.html">Webtoomee</a>
+        <a class="sub-title" href="index.jsp">Webtoomee</a>
     </div>
     <div class="main-title-box">
-        <a class="main-title" href="episodeList.html">로그인</a>
+        <a class="main-title" href="login.jsp">로그인</a>
     </div>
     <div>
     </div>
