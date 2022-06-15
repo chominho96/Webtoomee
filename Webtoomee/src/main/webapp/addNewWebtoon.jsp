@@ -2,8 +2,13 @@
 <%@ page import="com.example.user.User" %>
 <%@ page import="com.example.webtoon.Webtoon" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%
+    /**
+     *  addNewWebtoon.jsp
+     *  웹툰을 추가/수정하는 페이지입니다.
+     */
+
+    // 웹툰 추가, 수정의 경우 로그인된 사용자만 할 수 있기 때문에, 로그인 여부를 확인합니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
 %>
@@ -25,7 +30,12 @@
     boolean isRevise = false;
     Integer webtoonId = null;
     Webtoon findWebtoon = null;
-    // 등록이 아닌 수정일 경우
+
+    /**
+     *  등록이 아닌 수정일 경우
+     *  수정의 경우 쿼리파라미터로 해당 웹툰의 id를 넘깁니다.
+     *  따라서 이를 가지고 수정을 진행합니다.
+     */
     try {
         webtoonId = Integer.parseInt(request.getParameter("id"));
         isRevise = true;
@@ -88,6 +98,7 @@
             <input type="text" id="webtoonTitle" name="webtoonTitle"
                    value="<%
                    if (isRevise) {
+                       // 수정인 경우, 기존에 존재하던 값을 미리 입력해 놓습니다.
                        %><%=findWebtoon.getWebtoonTitle()%>
                        <%
                    }
@@ -97,6 +108,7 @@
             <select name="webtoonGenre">
                 <option value="daily"
                         <%
+                            // 수정인 경우, 기존에 존재하던 값을 미리 선택해 놓습니다.
                             if (isRevise && findWebtoon.getWebtoonGenre().equals("daily")) {
                         %>
                                 selected
@@ -140,6 +152,7 @@
             </textarea>
             <%
                 if (isRevise) {
+                    // 수정인 경우, 기존에 존재하던 값을 미리 입력해 놓습니다.
                     %>
             <input type="text" name="webtoonId" value="<%=findWebtoon.getWebtoonId()%>" hidden />
             <%

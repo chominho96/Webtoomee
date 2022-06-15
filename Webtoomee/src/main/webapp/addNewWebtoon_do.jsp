@@ -10,7 +10,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    /**
+     *  addNewWebtoon_do.jsp
+     *  웹툰을 추가/수정하는 로직 처리를 담당합니다.
+     *
+     */
     request.setCharacterEncoding("utf-8");
+    // 로그인된 사용자만 접근할 수 있도록, 로그인 여부를 확인합니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
 %>
@@ -30,6 +36,9 @@
 <%
     }
 
+    /**
+     *  수정의 경우, 쿼리 파라미터로 webtoonId를 받아서 해당 ID를 가지고 수정을 진행합니다.
+     */
     boolean isRevise = false;
     Integer targetWebtoonId = null;
     try {
@@ -38,6 +47,7 @@
     }
     catch (Exception ignored) { }
 
+    // 넘겨받은 값을 저장합니다.
     String webtoonTitle = request.getParameter("webtoonTitle");
     String webtoonGenre = request.getParameter("webtoonGenre");
     String webtoonSummary = request.getParameter("webtoonSummary");
@@ -45,7 +55,7 @@
     Part part = request.getPart("webtoonThumbnail");
     Integer webtoonId = null;
 
-    // 이미지 업로드
+    // 파일을 저장하고, 저장된 파일의 이름을 넘겨받습니다.
     String uploadedImageURL = UploadImage.saveWebtoonThumbnail(part, request);
     if (uploadedImageURL == null) {
 %>
@@ -56,7 +66,10 @@
 <%
     }
 
-    // 1. 수정
+    /**
+     *  1. 수정
+     *  수정의 경우 기존에 존재하던 파일을 삭제하는 로직을 추가합니다.
+     */
     if (isRevise) {
         try {
             Connection connection = DbConnect.dbConnect();
@@ -71,7 +84,7 @@
             UploadImage.deleteFile(targetFile, request.getSession().getServletContext(), "images");
 
 
-            // 데이터 갱신
+            // DB에 업데이트 쿼리를 날립니다.
             query = "update webtoon set wtn_title=?, wtn_thb=?, wtn_genre=?, wtn_summ=?, wtn_auth_word=?," +
                     "created_at=? where wtn_id=?";
             pstmt = connection.prepareStatement(query);
@@ -97,8 +110,11 @@
         }
     }
 
-    // 2. 처음 업로드
-    else {
+        /**
+         *  2. 처음 업로드
+         *  처음 업로드하는 경우 insert 문을 통해 DB에 삽입합니다.
+         */
+        else {
         try {
             Connection connection = DbConnect.dbConnect();
 
@@ -127,7 +143,7 @@
 %>
             <script>
                 alert("업로드 되었습니다.");
-                location.href="webtoon.jsp?<%=webtoonId%>";
+                location.href="webtoonManagement.jsp";
             </script>
 <%
         }

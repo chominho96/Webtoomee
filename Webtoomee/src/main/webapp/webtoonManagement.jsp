@@ -5,6 +5,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+
+    /**
+     *  webtoonManagement.jsp
+     *  웹툰 작가 전용 페이지로, 웹툰 관리를 담당하는 페이지입니다.
+     */
+
+
+    // 로그인한 작가 정보를 불러옵니다.
     String username = null;
     List<Webtoon> allWebtoon = null;
 
@@ -17,6 +25,7 @@
 </script>
 <%
     }
+    // 해당 사용자의 분류가 작가가 맞는지 확인합니다.
     else {
         User findUser = User.findUser(loginUserId);
         if (findUser == null || findUser.getUserType().equals("user")) {
@@ -27,6 +36,7 @@
 </script>
 <%
         }
+        // 모든 웹툰을 불러옵니다.
         else {
             username = findUser.getUserName();
             allWebtoon = Webtoon.getAllWebtoonByUser(findUser.getUserId());
@@ -76,6 +86,7 @@
 
 <!-- webtoon title -->
 <%
+    // 불러온 모든 웹툰에 대해 출력합니다.
     for (Webtoon webtoon : allWebtoon) {
         Double rating = Webtoon.getRating(webtoon.getWebtoonId());
 %>
@@ -89,7 +100,67 @@
             <%=webtoon.getWebtoonTitle()%><br />
             <%=username%><br />
             <%=webtoon.getWebtoonGenre()%><br />
-            <span><img src="icons/별점.png" /><%=rating%></span>
+            <span>
+                <%
+                    switch ((int) Math.floor(rating)) {
+                        case 0:
+                %>
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 1:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 2:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 3:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 4:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 5:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <%
+                    break;
+            }
+        %>
+                <%=rating%>
+            </span>
         </div>
 
         <div class="add-edit-bar">
@@ -106,7 +177,7 @@
                 <div>정보 수정</div>
             </div>
             <div>
-                <button
+                <button style="background: antiquewhite"
                         onclick="
                         if(confirm('해당 웹툰을 삭제하시겠습니까?')) {
                             location.href='deleteWebtoon.jsp?id=<%=webtoon.getWebtoonId()%>';

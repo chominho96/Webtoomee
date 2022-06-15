@@ -1,9 +1,14 @@
 <%@ page import="com.example.login.LoginUser" %>
 <%@ page import="com.example.user.User" %>
 <%@ page import="com.example.webtoon.Webtoon" %>
-<%@ page import="com.example.webtoon.Episode" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+    /**
+     *  addEpisode.jsp
+     *  웹툰 회차를 추가/수정하는 페이지입니다.
+     */
+
+    // 로그인된 사용자가 있을 경우 해당 사용자의 ID를 가져옵니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
         %>
@@ -13,6 +18,7 @@
         </script>
 <%
     }
+    // 로그인된 사용자가 있을 경우 해당 사용자의 정보를 가져옵니다.
     User findUser = User.findUser(loginUserId);
     if (findUser == null) {
 %>
@@ -22,20 +28,21 @@
         </script>
 <%
     }
-
+    // 넘겨받은 웹툰에 대한 쿼리 파라미터로 어떤 웹툰의 회차를 추가하는 것인지 알아냅니다.
     Integer webtoonId = Integer.parseInt(request.getParameter("id"));
     Webtoon findWebtoon = Webtoon.findById(webtoonId);
 
+    /**
+     *  기존에 존재하던 회차를 수정하는 경우 쿼리 파라미터로 등록된 회차의 ID를 넘깁니다.
+     *  따라서 epi_id에 해당하는 파라미터가 있는지 확인하고, 있으면 수정을 진행합니다.
+     */
     Integer episodeId = null;
     boolean isRevised = false;
-    // 수정인 경우 확인
     try {
         episodeId = Integer.parseInt(request.getParameter("epi_id"));
         isRevised = true;
     }
     catch (Exception ignored) { }
-
-
 
 %>
 
@@ -111,7 +118,7 @@
                     value="<%if (isRevised) {%><%=com.example.webtoon.Episode.findById(episodeId).getEpisodeTitle()%><%}%>"/>
             <input type="text" id="webtoonId" name="webtoonId" value="<%=webtoonId%>" hidden />
             <%
-                // 수정된 경우
+                // 수정하는 경우 기존의 값을 넣습니다.
                 if (isRevised) {
                     %>
                     <input type="text" id="episodeId" name="episodeId" value="<%=episodeId%>" hidden />

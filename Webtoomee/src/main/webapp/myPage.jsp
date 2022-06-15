@@ -4,6 +4,13 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+    /**
+     *  myPage.jsp
+     *  마이페이지에 대한 페이지입니다.
+     */
+
+    // 로그인된 사용자만 이용할 수 있기 때문에, 로그인 여부를 확인합니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
 %>
@@ -24,6 +31,7 @@
 <%
     }
 
+    // 사용자의 분류에 따라 다르게 출력됩니다.
     switch (findUser.getUserType()) {
         case "user":
             userType = "사용자님";
@@ -65,6 +73,7 @@
             <span><%=findUser.getUserLoginId()%></span>
         </div>
         <%
+            // 웹툰 작가일 경우, 연재 중인 웹툰이 표시됩니다.
             if (userType.equals("작가님")) {
         %>
         <span>연재 중인 웹툰</span>

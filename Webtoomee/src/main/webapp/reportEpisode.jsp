@@ -8,6 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+
+    /**
+     *  reportEpisode.jsp
+     *  특정 웹툰 회차 신고에 대한 로직을 담당합니다.
+     */
+
+    // 신고의 경우 로그인된 사용자만 이용할 수 있기 때문에, 로그인 여부를 확인합니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
       %>
@@ -27,9 +34,11 @@
 <%
     }
 
+    // 신고하고자 하는 회차에 대한 정보를 넘겨받습니다.
     Integer episodeId = Integer.parseInt(request.getParameter("id"));
 
     try {
+        // 특정 회원은 특정 회차에 대해 1번만 신고할 수 있기 때문에, 기존 신고 이력이 있는지 확인합니다.
         Connection connection = DbConnect.dbConnect();
         String query = "select count(report_id) as 'count' from report where epi_id=? and user_id=?";
         PreparedStatement pstmt = connection.prepareStatement(query);
@@ -46,6 +55,7 @@
 <%
         }
         else {
+            // report table에 insert문을 통해 데이터를 삽입합니다.
             query = "insert into report(user_id, epi_id, created_at) values(?, ?, ?)";
             pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, loginUserId);

@@ -12,6 +12,7 @@
 }
 .search-bar input {
   /* input의 border 제거 */
+  background-color: antiquewhite;
   border: none;
   width: 260px;
 }
@@ -20,11 +21,12 @@
   outline: none;
 }
 
-.search-bar button {
+.search-bar input[type="image"] {
   /* 검색 아이콘을 버튼으로 사용 */
-  border: none;
   z-index: -1;
   background-color: white;
+  width: 13px;
+  height: 13px;
 }
 .search-bar img {
   /* 검색 아이콘 */

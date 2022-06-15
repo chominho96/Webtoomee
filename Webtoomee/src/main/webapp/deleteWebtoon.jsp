@@ -7,7 +7,15 @@
 <%@ page import="com.example.webtoon.Webtoon" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+  /**
+   *  deleteWebtoon.jsp
+   *  웹툰 삭제에 대한 로직을 담당합니다.
+   */
+
   request.setCharacterEncoding("utf-8");
+
+  // 삭제할 웹툰 ID를 쿼리 파라미터로 넘겨받습니다.
   Integer webtoonId = null;
   try {
     webtoonId = Integer.parseInt(request.getParameter("id"));
@@ -23,26 +31,27 @@
 
   try {
     Connection connection = DbConnect.dbConnect();
-    // 1. 모든 회차 삭제
+    // 해당 웹툰에 대한 모든 회차를 삭제합니다.
     List<Episode> episodeList = Episode.findAllByWebtoon(webtoonId);
     for (Episode episode : episodeList) {
-      // 파일 삭제
+
+      // 해당 회차에 대해 저장되어 있는 파일을 삭제합니다.
       UploadImage.deleteFile(episode.getEpisodeFile(), request.getSession().getServletContext(), "images");
       UploadImage.deleteFile(episode.getEpisodeThumbnail(), request.getSession().getServletContext(), "images");
     }
 
-    // DB에서 삭제
+    // 해당 웹툰의 모든 회차를 삭제합니다.
     String query = "delete from episode where wtn_id=?";
     PreparedStatement pstmt = connection.prepareStatement(query);
     pstmt.setInt(1, webtoonId);
     pstmt.executeUpdate();
 
-    // 2. 웹툰 삭제
+
     Webtoon findWebtoon = Webtoon.findById(webtoonId);
-    // 파일 삭제
+    // 해당 웹툰에 대해 저장되어 있는 파일을 삭제합니다.
     UploadImage.deleteFile(findWebtoon.getWebtoonFileName(), request.getSession().getServletContext(), "images");
 
-    // DB에서 삭제
+    // 해당 웹툰을 DB에서 삭제합니다.
     query = "delete from webtoon where wtn_id=?";
     pstmt = connection.prepareStatement(query);
     pstmt.setInt(1, webtoonId);
@@ -66,5 +75,4 @@
     </script>
 <%
   }
-
 %>

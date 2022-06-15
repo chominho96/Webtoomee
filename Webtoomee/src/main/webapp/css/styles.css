@@ -19,6 +19,7 @@
 @import "screens/myPage.css";
 
 body {
+  background-color: antiquewhite;
   color: #2e363e;
   padding-top: 30px;
   padding-left: 10%;

@@ -3,6 +3,13 @@
 <%@ page import="com.example.user.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+    /**
+     *  webtoon.jsp
+     *  특정 웹툰 회차에 대한 페이지입니다.
+     */
+
+    // 해당 회차 ID를 넘겨받습니다.
     Integer episodeId = null;
     try {
         episodeId = Integer.parseInt(request.getParameter("id"));
@@ -15,11 +22,13 @@
 <%
     }
 
+    // 넘겨받은 회차 ID로 해당 회차에 대해 불러옵니다.
     Episode episode = Episode.findById(episodeId);
     String loginUserName = "로그인";
     String userType = "";
     boolean isLogin = false;
 
+    // 로그인 여부에 따라 다르게 화면을 출력하기 위해 로그인 여부를 확인합니다.
     Integer loginUser = LoginUser.getLoginUser(request, session);
     if (loginUser != null) {
         isLogin = true;
@@ -57,6 +66,7 @@
         <div>
           <span>
               <%
+                  // 로그인을 한 경우 마이페이지, 로그인을 하지 않은 경우 로그인 페이지로 연결됩니다.
                   if (isLogin) {
                       %>
                     <a href="myPage.jsp"><img src="icons/user.png" /></a>
@@ -79,7 +89,7 @@
 <!-- episode -->
 <div class="episode-box">
     <div class="single-episode">
-        <img src="./images/<%=episode.getEpisodeThumbnail()%>" />
+        <img width="125" height="137" src="./images/<%=episode.getEpisodeThumbnail()%>" />
         <div>
             <%=episode.getEpisodeTitle()%><br />
             <%=episode.getCreatedAt().toString().substring(0, 10)%><br />

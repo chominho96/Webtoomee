@@ -5,6 +5,13 @@
 <%@ page import="com.example.user.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+    /**
+     *  episodeList.jsp
+     *  특정 웹툰에 대해 모든 회차를 보여주는 페이지입니다.
+     */
+
+    // 웹툰 ID를 쿼리 파라미터로 넘겨받습니다.
     Integer webtoonId = null;
     try {
         webtoonId = Integer.parseInt(request.getParameter("id"));
@@ -17,9 +24,13 @@
         </script>
 <%
     }
+
+    // 넘겨받은 웹툰 ID에 대해 해당하는 웹툰 객체를 반환합니다.
     Webtoon findWebtoon = Webtoon.findById(webtoonId);
     List<Episode> episodeList = Episode.findAllByWebtoon(webtoonId);
 
+
+    // 상단에 표시되는 사용자 정보를 위해, 로그인 여부를 판단합니다.
     String loginUserName = "로그인";
     String userType = "";
     boolean isLogin = false;
@@ -55,12 +66,13 @@
         <a class="sub-title" href="index.jsp">Webtoomee</a>
     </div>
     <div class="main-title-box">
-        <a class="main-title" href="episodeList.jsp?<%=webtoonId%>"><%=findWebtoon.getWebtoonTitle()%></a>
+        <a class="main-title" href="episodeList.jsp?id=<%=webtoonId%>"><%=findWebtoon.getWebtoonTitle()%></a>
     </div>
     <div class="title-bar-menu">
         <div>
           <span>
               <%
+                  // 로그인된 경우, 마이페이지로 연결하고, 비로그인의 경우 로그인 페이지로 이동할 수 있게 합니다.
                   if (isLogin) {
               %>
                     <a href="myPage.jsp"><img src="icons/user.png" /></a>
@@ -78,6 +90,7 @@
         </div>
         <div>
             <%
+                // 로그인된 사용자가 웹툰 작가일 경우, 웹툰 관리로 연결되는 버튼을 생성합니다.
                 if(userType.equals("웹툰 작가")) {
                     %>
                     <span>
@@ -97,12 +110,11 @@
 
 <!-- search bar -->
 <div class="search-bar-box">
-    <form method="get" action="webtoonList.jsp">
+    <form method="get" action="searchWebtoon.jsp" id="frm">
         <div class="search-bar">
-            <input type="text" name="search" placeholder="search..." />
-            <button type="submit">
-                <img src="icons/magnifying-glass-solid.svg" />
-            </button>
+            <input name="value" type="text" placeholder="search..." />
+            <a href="javascript:document.getElementById('frm').submit()"><img src="icons/magnifying-glass-solid.svg" width="13" height="13"/>
+            </a>
         </div>
     </form>
 </div>
@@ -110,7 +122,7 @@
 
 <!-- webtoon title -->
 <div class="episode-list-webtoon-title">
-    <img src="./images/<%=findWebtoon.getWebtoonFileName()%>" />
+    <img width="135" height="150" src="./images/<%=findWebtoon.getWebtoonFileName()%>" />
     <div class="webtoon-description">
         <div>
             <%=findWebtoon.getWebtoonTitle()%><br />
@@ -132,9 +144,9 @@
         for (Episode episode : episodeList) {
 %>
 <div class="single-episode">
-      <span
-      ><a href="webtoon.jsp?id=<%=episode.getEpisodeId()%>"><img src="./images/<%=episode.getEpisodeThumbnail()%>" /></a
-      ></span>
+      <span>
+          <a href="webtoon.jsp?id=<%=episode.getEpisodeId()%>"><img width="135" height="150" src="./images/<%=episode.getEpisodeThumbnail()%>" /></a>
+      </span>
 
     <div>
         <%=episode.getEpisodeTitle()%><br />

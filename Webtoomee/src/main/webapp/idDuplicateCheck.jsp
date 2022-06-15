@@ -1,37 +1,36 @@
 <%@ page import="java.sql.*" %>
+<%@ page import="com.example.db_connect.DbConnect" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+    /**
+     *  idDuplicateCheck.jsp
+     *  회원 가입시, ID 중복체크에 대한 페이지입니다.
+     */
+
+    // 체크하고자 하는 ID를 쿼리 파라미터로 넘겨받습니다.
     String loginId = request.getParameter("loginId");
     boolean isDuplicate = false;
 
     try {
-        Class.forName("org.mariadb.jdbc.Driver");
 
-        // TODO : 이름 변경
-        //String DB_URL = "jdbc:mariadb://localhost:3306/webtoon?useSSL=false";
-        String DB_URL = "jdbc:mariadb://localhost:3307/webtoon?useSSL=false";
-
-        // TODO : 이름 변경
-        //String DB_USER = "admin";
-        //String DB_PASSWORD= "1234";
-        String DB_USER = "root";
-        String DB_PASSWORD = "whalsgh9664!";
-        // TODO : 이름 변경
-
-        Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); // 연결자 획득
+        // 기존에 해당 ID를 가진 사용자가 있는지를 DB에서 확인합니다.
+        Connection connection = DbConnect.dbConnect();
         String query = "select count(user_id) as 'count' from user where user_login_id = ?";
-        PreparedStatement pstmt = con.prepareStatement(query);
+        PreparedStatement pstmt = connection.prepareStatement(query);
         pstmt.setString(1, loginId);
         ResultSet rs = pstmt.executeQuery();
         rs.next();
         int count = rs.getInt("count");
+
+        // ID가 중복된 경우
         if (count >= 1) {
             isDuplicate = true;
         }
 
         rs.close();
         pstmt.close();
-        con.close();
+        connection.close();
     }
     catch (Exception ignored) {
 

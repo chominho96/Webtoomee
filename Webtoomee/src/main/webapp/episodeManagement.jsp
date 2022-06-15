@@ -8,6 +8,13 @@
 <%@ page import="com.example.webtoon.Episode" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
+  /**
+   *  episodeManagement.jsp
+   *  웹툰 작가만 사용할 수 있는 페이지로, 연재 중인 특정 웹툰에 대한 회차를 관리할 수 있는 페이지입니다.
+   */
+
+  // 로그인된 사용자를 확인합니다.
   Integer loginUserId = LoginUser.getLoginUser(request, session);
   if (loginUserId == null) {
 %>
@@ -27,11 +34,13 @@
 <%
   }
 
+  // 웹툰 ID를 쿼리파라미터로 넘겨받습니다.
   Integer webtoonId = Integer.parseInt(request.getParameter("id"));
   Webtoon findWebtoon = Webtoon.findById(webtoonId);
   ResultSet rs = null;
 
   try {
+    // 해당 웹툰에 대한 모든 회차를 DB에서 조회합니다.
     Connection connection = DbConnect.dbConnect();
     String query = "select * from episode where wtn_id=? order by epi_id";
     PreparedStatement pstmt = connection.prepareStatement(query);
@@ -94,7 +103,67 @@
     <div class="webtoon-management-description">
       <%=rs.getString("epi_title")%><br />
       <%=rs.getString("created_at")%><br />
-      <span><img src="icons/별점.png" /> <%=rating%></span>
+      <span>
+        <%
+          switch ((int) Math.floor(rating)) {
+            case 0:
+        %>
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+            break;
+          case 1:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+            break;
+          case 2:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+            break;
+          case 3:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+            break;
+          case 4:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+            break;
+          case 5:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <%
+              break;
+          }
+        %>
+        <%=rating%>
+      </span>
     </div>
 
     <div class="add-edit-bar">
@@ -105,7 +174,7 @@
         <div>수정</div>
       </div>
       <div>
-        <button onclick="
+        <button style="background-color: antiquewhite" onclick="
                 if(confirm('해당 회차를 삭제하시겠습니까?')) {
                   location.href='deleteEpisode.jsp?id=<%=rs.getString("epi_id")%>';
                 }

@@ -8,7 +8,6 @@
 .webtoon-list {
   /* 웹툰 리스트 */
   display: flex;
-  justify-content: space-between;
   margin-bottom: 50px;
 }
 

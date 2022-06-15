@@ -11,6 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 사용자의 정보를 저장하는 클래스입니다.
+ */
 public class User {
     private Integer userId;
     private String userType;
@@ -53,6 +56,10 @@ public class User {
         this.createdAt = LocalDateTime.parse(createdAt, formatter);
     }
 
+    /**
+     *
+     *  userId를 통해 사용자 객체를 생성, 반환합니다.
+     */
     public static User findUser(Integer userId) {
         try {
             Connection connection = DbConnect.dbConnect();
@@ -83,6 +90,10 @@ public class User {
 
     }
 
+    /**
+     *
+     *  모든 웹툰 작가 리스트를 반환합니다.
+     */
     public static List<User> findAllAuthor() {
         try {
             List<User> result = new ArrayList<>();

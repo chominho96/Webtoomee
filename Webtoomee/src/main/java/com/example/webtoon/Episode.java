@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  웹툰 회차에 대한 클래스입니다.
+ */
 public class Episode {
 
     Integer episodeId;
@@ -54,6 +57,10 @@ public class Episode {
         this.createdAt = LocalDateTime.parse(createdAt, formatter);
     }
 
+    /**
+     *
+     * 웹툰 ID를 넘겨받아, 해당 웹툰의 모든 회차를 리스트 형태로 반환합니다.
+     */
     public static List<Episode> findAllByWebtoon(Integer webtoonId) {
         try {
             Connection connection = DbConnect.dbConnect();
@@ -79,6 +86,11 @@ public class Episode {
             return null;
         }
     }
+
+    /**
+     *
+     *  회차 ID를 넘겨받아, 해당 회차의 평균 평점을 반환합니다.
+     */
     public static Double getRating (Integer episodeId) {
         try {
             Connection connection = DbConnect.dbConnect();
@@ -99,6 +111,10 @@ public class Episode {
         }
     }
 
+    /**
+     *
+     *  회차 ID를 넘겨받아, 해당 ID에 해당하는 회차 객체를 반환합니다.
+     */
     public static Episode findById (Integer episodeId) {
         try {
             Connection connection = DbConnect.dbConnect();
@@ -112,6 +128,33 @@ public class Episode {
 
             connection.close();
             return episode;
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     *
+     *  회차ID를 넘겨받아, 해당 회차의 누적 신고 수를 반환합니다.
+     */
+
+    public static Integer getReportNum(Integer episodeId) {
+        try {
+            Connection connection = DbConnect.dbConnect();
+            String query = "select count(*) as 'count' from report where epi_id=?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, episodeId);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            Integer result = rs.getInt("count");
+
+            rs.close();
+            pstmt.close();
+            connection.close();
+            return result;
 
         }
         catch (Exception e) {

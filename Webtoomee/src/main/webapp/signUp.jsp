@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    /**
+     *  signUp.jsp
+     *  회원가입에 대한 페이지입니다.
+     */
+%>
 <html>
 <head>
     <title>Sign Up</title>
@@ -25,7 +31,7 @@
                 <h2>아이디 / ID</h2>
                 <input type="text" id="loginId" name="loginId" required />
                 <input type="button" class="login-submit" value="ID 중복체크"
-                       onclick="window.open('idDuplicateCheck.jsp?' + document.getElementById('loginId').value,
+                       onclick="window.open('idDuplicateCheck.jsp?loginId=' + document.getElementById('loginId').value,
                        '_blank', 'width=500, height=300, resizable=no, scrollbars=no')"
                 />
 

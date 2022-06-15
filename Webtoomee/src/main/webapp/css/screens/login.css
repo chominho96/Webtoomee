@@ -1,3 +1,6 @@
+.login-input input {
+    background-color: antiquewhite;
+}
 .login-input input[type="text"] {
     /* 입력창 */
     width: 400px;
@@ -20,11 +23,19 @@
 .login-input input[type="password"]:focus {
     outline: none;
 }
-.login-submit {
+.login-input input[type="submit"] {
     background-color: darkseagreen;
+}
+.login-input input[type="button"] {
+    background-color: darkseagreen;
+}
+.login-submit {
     border: none;
     padding: 5px;
     border-radius: 1px;
+}
+.login-form input[type="button"] {
+    background-color: darkseagreen;
 }
 .login-input-box {
     display: flex;
@@ -32,7 +43,7 @@
     align-items: center;
 }
 .login-form {
-    border: 1px solid aquamarine;
+    border: 1px solid darkslategrey;
     border-radius: 10px;
     padding: 50px;
 }

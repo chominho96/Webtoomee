@@ -8,6 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    /**
+     *  addRating.jsp
+     *  회차에 대해 평점을 부여했을 때, 이를 처리하는 로직을 담당합니다.
+     */
+
+    // 평점 부여의 경우, 로그인한 사용자에 한해 이용할 수 있기 때문에, 로그인 여부를 확인합니다.
     Integer loginUserId = LoginUser.getLoginUser(request, session);
     if (loginUserId == null) {
 %>
@@ -27,6 +33,7 @@
 <%
     }
 
+    // 쿼리 파라미터로 넘겨받은 회차 ID와, 평점을 확인합니다.
     Integer episodeId = Integer.parseInt(request.getParameter("id"));
     String rating = null;
     try {
@@ -45,6 +52,10 @@
         rating = request.getParameter("star-5");
     } catch (Exception ignore) { }
 
+    /**
+     *  한 회차에 대해 한 회원은 한 번만 평점을 부여할 수 있습니다.
+     *  따라서 해당 회원의 ID와 해당 회차의 ID를 이용하여 기존에 이미 부여한 평점이 있는지 확인합니다.
+     */
     try {
         Connection connection = DbConnect.dbConnect();
         String query = "select count(rt_id) as 'count' from rating where user_id=? and epi_id=?";
@@ -62,6 +73,7 @@
 <%
         }
         else {
+            // 정상적인 진행의 경우, rating 테이블에 insert문으로 데이터를 삽입합니다.
             query = "insert into rating(user_id, epi_id, rt_score, created_at) values(?, ?, ?, ?)";
             pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, findUser.getUserId());

@@ -2,8 +2,15 @@
 <%@ page import="com.example.db_connect.DbConnect" %>
 <%@ page import="com.example.login.LoginUser" %>
 <%@ page import="com.example.user.User" %>
+<%@ page import="com.example.webtoon.Webtoon" %>
 
 <%
+
+    /**
+     *  index.jsp
+     *  메인 페이지입니다.
+     */
+
     ResultSet bestWebtoonRS = null;
     ResultSet risingWebtoonRS = null;
     String loginUserName = null;
@@ -19,27 +26,28 @@
          * 평균 평점 순으로 10개
          *
          */
-        String bestWebtoonQuery = "SELECT wtn_id, wtn_title, (select user_name from user where user_id=T.wtn_author) as 'author', wtn_genre, " +
-                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating', wtn_thb " +
+        String bestWebtoonQuery = "SELECT T.wtn_id, T.wtn_title, (select user_name from user where user_id=T.wtn_author) as 'author', T.wtn_genre, " +
+                "(select avg(rt_score) from rating K join episode S on K.epi_id=S.epi_id where S.wtn_id=T.wtn_id) as 'rating', T.wtn_thb " +
                 "FROM webtoon T " +
-                "order by rating limit 10";
+                "order by rating desc limit 10";
         bestWebtoonRS = stmt.executeQuery(bestWebtoonQuery);
 
         /**
          * 인기 급상승 웹툰 쿼리
          * 평균 평점이 4점 이상인 웹툰 중 최근에 연재를 시작한 순, 평균 평점이 높은 순으로 10개
          */
-        String risingWebtoonQuery = "SELECT wtn_title, (select user_name from user where user_id=T.wtn_author) as 'name', wtn_genre, " +
-                "(select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) as 'rating', wtn_thb " +
-                "FROM webtoon T " +
-                "where (select avg(rt_score) from rating natural join episode where wtn_id=T.wtn_id) > 4 " +
-                "order by created_at desc, rating limit 10 ";
+        String risingWebtoonQuery = "select T.wtn_id, T.wtn_title, (select user_name from user where user_id=T.wtn_author) as 'author', T.wtn_genre, " +
+                "(select avg(rt_score) from rating K join episode S on K.epi_id=S.epi_id where S.wtn_id=T.wtn_id) as 'rating', T.wtn_thb " +
+                "from webtoon T " +
+                "where (select avg(rt_score) from rating K join episode S on K.epi_id=S.epi_id where S.wtn_id=T.wtn_id) >= 4 " +
+                "order by T.created_at, rating desc limit 10";
         risingWebtoonRS = stmt.executeQuery(risingWebtoonQuery);
 
 
         /**
          *  현재 로그인된 사용자 조회
          *  로그인된 사용자 정보는 쿠키에 UUID의 형식으로 저장
+         *  로그인, 비로그인, 사용자 유형 별로 다르게 표시될 수 있게 합니다.
          */
         Integer loginUserId = LoginUser.getLoginUser(request, session);
         if (loginUserId == null) {
@@ -102,14 +110,28 @@
             <% } %>
         </div>
         <%
-            if (loginUserType.equals("웹툰 작가") || loginUserType.equals("관리자")) {
+            // 웹툰 작가일 경우 웹툰 관리 페이지로 연결되는 버튼이 생성됩니다.
+            if (loginUserType.equals("웹툰 작가")) {
         %>
         <div>
-          <span
-          ><a href="webtoonManagement.jsp"
-          ><img src="icons/pen-to-square-solid.svg" /></a
-          ></span>
+          <span>
+              <a href="webtoonManagement.jsp">
+                  <img src="icons/pen-to-square-solid.svg" />
+              </a>
+          </span>
             <div>웹툰 관리</div>
+        </div>
+        <%
+            }
+            else if (loginUserType.equals("관리자")) {
+                %>
+        <div>
+            <span>
+                <a href="adminManagement.jsp">
+                    <img src="icons/pen-to-square-solid.svg" />
+                </a>
+            </span>
+            <div>웹툰 관리 (관리자)</div>
         </div>
         <%
             }
@@ -133,12 +155,11 @@
         <span><a href="webtoonList.jsp?by=author">작가별 웹툰</a></span>
     </div>
 
-    <form>
+    <form method="get" action="searchWebtoon.jsp" id="frm">
         <div class="search-bar">
-            <input type="text" placeholder="search..." />
-            <button type="submit">
-                <img src="icons/magnifying-glass-solid.svg" />
-            </button>
+            <input name="value" type="text" placeholder="search..." />
+            <a href="javascript:document.getElementById('frm').submit()"><img src="icons/magnifying-glass-solid.svg" width="13" height="13"/>
+            </a>
         </div>
     </form>
 </div>
@@ -150,13 +171,13 @@
 <div class="underlined-title-box">
     <span>주요 인기 웹툰</span>
 </div>
-
+<div class="webtoon-list">
 <%
+    // 주요 인기 웹툰에 대해 출력합니다.
     while(bestWebtoonRS.next()) {
+        Integer rating = (int) Math.floor(Webtoon.getRating(bestWebtoonRS.getInt("wtn_id")));
 
 %>
-
-<div class="webtoon-list">
     <div class="single-webtoon">
         <span>
             <a href="episodeList.jsp?id=<%=bestWebtoonRS.getInt("wtn_id")%>">
@@ -166,22 +187,80 @@
         <div>
             <%=bestWebtoonRS.getString("wtn_title")%><br /><%=bestWebtoonRS.getString("author")%><br /><%=bestWebtoonRS.getString("wtn_genre")%>
         </div>
-        <img class="rating" src="icons/별점.png" />
+        <%
+            switch (rating) {
+                case 0:
+        %>
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                    break;
+                case 1:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                    break;
+                case 2:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                    break;
+                case 3:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                    break;
+                case 4:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                    break;
+                case 5:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <%
+                    break;
+            }
+        %>
+
     </div>
-</div>
 <%
     }
 %>
+</div>
 
 <div class="underlined-title-box">
     <span>인기 급상승 웹툰</span>
 </div>
-
-<%
-    while(risingWebtoonRS.next()) {
-%>
-
 <div class="webtoon-list">
+<%
+    // 인기 급상승 웹툰에 대해 출력합니다.
+    while(risingWebtoonRS.next()) {
+        Integer rating = (int) Math.floor(Webtoon.getRating(risingWebtoonRS.getInt("wtn_id")));
+%>
     <div class="single-webtoon">
         <span>
             <a href="episodeList.jsp?id=<%=risingWebtoonRS.getInt("wtn_id")%>">
@@ -191,12 +270,69 @@
         <div>
             <%=risingWebtoonRS.getString("wtn_title")%><br /><%=risingWebtoonRS.getString("author")%><br /><%=risingWebtoonRS.getString("wtn_genre")%>
         </div>
-        <img class="rating" src="icons/별점.png" />
+        <%
+            switch (rating) {
+                case 0:
+        %>
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 1:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 2:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 3:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 4:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 5:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <%
+                    break;
+            }
+        %>
     </div>
-</div>
 <%
     }
 %>
+</div>
 
 <!-- webtoon list -->
 </body>

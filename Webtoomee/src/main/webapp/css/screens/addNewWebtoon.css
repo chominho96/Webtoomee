@@ -12,6 +12,7 @@
 }
 .add-webtoon-form-box input[type="text"] {
   /* 웹툰 제목 입력 */
+  background-color: antiquewhite;
   width: 400px;
   height: 30px;
   border: none;
@@ -23,6 +24,7 @@
 }
 .add-webtoon-form-box textarea {
   /* 줄거리, 작가의 말 */
+  background-color: antiquewhite;
   width: 400px;
   height: 300px;
   resize: none;
@@ -53,4 +55,11 @@
   font-weight: 900;
   margin-bottom: 20px;
   color: gray;
+}
+
+.webtoon-info-input input {
+  background-color: antiquewhite;
+}
+.webtoon-info-input input[type="submit"] {
+  background-color: #007a03;
 }

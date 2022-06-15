@@ -1,15 +1,12 @@
 .single-webtoon {
   /* 하나의 웹툰 상세 */
   text-align: center;
+  margin-right: 100px;
 }
 
 .single-webtoon img:first-child {
   width: 90px;
   height: 100px;
-}
-.single-webtoon img:nth-of-type(2) {
-  width: 80px;
-  height: 15px;
 }
 
 .single-webtoon div {

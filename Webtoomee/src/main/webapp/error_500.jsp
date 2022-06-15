@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isErrorPage="true" %>
 <%
+    /**
+     *  error_500.jsp
+     *  500 에러에 대한 에러 페이지입니다.
+     */
     exception.printStackTrace();
 %>
 <html>

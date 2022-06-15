@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    /**
+     *  login.jsp
+     *  로그인에 대한 페이지입니다.
+     */
+%>
 <html>
 <head>
     <title>Login</title>
