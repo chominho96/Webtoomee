@@ -188,7 +188,7 @@ public class Webtoon {
      *
      *  모든 장르에 대해 Map<장르이름, 해당 장르의 모든 웹툰 리스트> 을 반환합니다.
      */
-    public static Map<String, List<Webtoon>> findByGenre() {
+    public static Map<String, List<Webtoon>> findAllByGenre() {
         try {
             Map<String, List<Webtoon>> resultMap = new HashMap<>();
             String[] genreList = { "daily", "comic", "fantasy", "action" };
@@ -225,7 +225,7 @@ public class Webtoon {
      *
      *  작가별로 Map<작가 ID, 해당 작가의 모든 웹툰 리스트>를 반환합니다.
      */
-    public static Map<Integer, List<Webtoon>> findByAuthor() {
+    public static Map<Integer, List<Webtoon>> findAllByAuthor() {
         try {
             Map<Integer, List<Webtoon>> resultMap = new HashMap<>();
             List<User> authorList = User.findAllAuthor();

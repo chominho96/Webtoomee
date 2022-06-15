@@ -207,7 +207,7 @@
     }
     // 작가별로 정렬할 경우, Map<작가 ID, 웹툰 리스트> 의 형식으로 모든 웹툰을 불러오고, 이에 대해 출력합니다.
     else if (sortBy.equals("author")) {
-        Map<Integer, List<Webtoon>> webtoonByAuthor = Webtoon.findByAuthor();
+        Map<Integer, List<Webtoon>> webtoonByAuthor = Webtoon.findAllByAuthor();
         if (webtoonByAuthor != null) {
             Set<Integer> keySet = webtoonByAuthor.keySet();
 
@@ -303,7 +303,7 @@
 
     // 장르별로 정렬할 경우, Map<장르, 웹툰 리스트> 와 같은 형식으로 모든 웹툰을 불러오고, 이에 대해 출력합니다.
     else {
-        Map<String, List<Webtoon>> webtoonByGenre = Webtoon.findByGenre();
+        Map<String, List<Webtoon>> webtoonByGenre = Webtoon.findAllByGenre();
         if (webtoonByGenre != null) {
             Set<String> keySet = webtoonByGenre.keySet();
 
