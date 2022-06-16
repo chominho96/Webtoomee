@@ -191,7 +191,7 @@ public class Webtoon {
     public static Map<String, List<Webtoon>> findAllByGenre() {
         try {
             Map<String, List<Webtoon>> resultMap = new HashMap<>();
-            String[] genreList = { "daily", "comic", "fantasy", "action" };
+            String[] genreList = { "daily", "comedy", "fantasy", "action" };
 
             Connection connection = DbConnect.dbConnect();
             for (int i = 0; i < genreList.length; i++) {

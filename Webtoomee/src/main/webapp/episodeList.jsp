@@ -29,6 +29,9 @@
     Webtoon findWebtoon = Webtoon.findById(webtoonId);
     List<Episode> episodeList = Episode.findAllByWebtoon(webtoonId);
 
+    // 해당 웹툰의 평균 평점을 조회합니다.
+    Double rating = Math.floor(Webtoon.getRating(webtoonId));
+
 
     // 상단에 표시되는 사용자 정보를 위해, 로그인 여부를 판단합니다.
     String loginUserName = "로그인";
@@ -128,7 +131,67 @@
             <%=findWebtoon.getWebtoonTitle()%><br />
             <%=User.findUser(findWebtoon.getAuthorId()).getUserName()%><br />
             <%=findWebtoon.getWebtoonGenre()%><br />
-            <span><img src="icons/별점.png" /> <%=Webtoon.getRating(webtoonId)%></span>
+            <span>
+                <%
+                    switch ((int)((double) rating)) {
+                        case 0:
+                %>
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 1:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 2:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 3:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 4:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/empty_star.ico" />
+        <%
+                break;
+            case 5:
+        %>
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <img width="15" height="15" src="icons/full_star.ico" />
+        <%
+                    break;
+            }
+        %>
+                <%=rating%>
+            </span>
         </div>
         <div>
             <%=findWebtoon.getWebtoonSummary()%><br />

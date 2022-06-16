@@ -69,85 +69,85 @@
 </script>
 <%
     }
+    else {
+        /**
+         *  1. 수정된 경우
+         *  수정된 경우 기존에 존재하던 파일을 삭제하는 로직을 추가합니다.
+         */
+        if (isRevised) {
+            Episode findEpisode = Episode.findById(targetEpisodeId);
+            // 기존에 존재하던 파일을 삭제합니다.
+            UploadImage.deleteFile(findEpisode.getEpisodeThumbnail(), request.getSession().getServletContext(), "images");
+            UploadImage.deleteFile(findEpisode.getEpisodeFile(), request.getSession().getServletContext(), "images");
 
-    /**
-     *  1. 수정된 경우
-     *  수정된 경우 기존에 존재하던 파일을 삭제하는 로직을 추가합니다.
-     */
-    if (isRevised) {
-        Episode findEpisode = Episode.findById(targetEpisodeId);
-        // 기존에 존재하던 파일을 삭제합니다.
-        UploadImage.deleteFile(findEpisode.getEpisodeThumbnail(), request.getSession().getServletContext(), "images");
-        UploadImage.deleteFile(findEpisode.getEpisodeFile(), request.getSession().getServletContext(), "images");
+            try {
+                Connection connection = DbConnect.dbConnect();
 
-        try {
-            Connection connection = DbConnect.dbConnect();
+                // 기존 DB에 대한 업데이트 쿼리를 날립니다.
+                String query = "update episode set epi_title=?, epi_thb=?, epi_file=? where epi_id=?";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setString(1, episodeTitle);
+                pstmt.setString(2, savedThumbnail);
+                pstmt.setString(3, savedFile);
+                pstmt.setInt(4, targetEpisodeId);
+                pstmt.executeUpdate();
 
-            // 기존 DB에 대한 업데이트 쿼리를 날립니다.
-            String query = "update episode set epi_title=?, epi_thb=?, epi_file=? where epi_id=?";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setString(1, episodeTitle);
-            pstmt.setString(2, savedThumbnail);
-            pstmt.setString(3, savedFile);
-            pstmt.setInt(4, targetEpisodeId);
-            pstmt.executeUpdate();
-
-            pstmt.close();
-            connection.close();
+                pstmt.close();
+                connection.close();
 
 %>
-<script>
-    alert("수정에 성공했습니다.");
-    location.href="webtoon.jsp?<%=targetEpisodeId%>";
-</script>
+                <script>
+                    alert("수정에 성공했습니다.");
+                    location.href="webtoon.jsp?id=<%=targetEpisodeId%>";
+                </script>
 <%
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
         /**
          *   2. 수정되지 않은 경우
          *      수정되지 않은 경우 새로운 값을 DB에 넣어줍니다.
          */
         else {
-        Integer episodeId = null;
+            Integer episodeId = null;
 
-        try {
-            Connection connection = DbConnect.dbConnect();
+            try {
+                Connection connection = DbConnect.dbConnect();
 
-            String query = "insert into episode(wtn_id, epi_title, epi_thb, epi_file, created_at) values(?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = connection.prepareStatement(query);
-            pstmt.setInt(1, webtoonId);
-            pstmt.setString(2, episodeTitle);
-            pstmt.setString(3, savedThumbnail);
-            pstmt.setString(4, savedFile);
-            pstmt.setString(5, String.valueOf(LocalDateTime.now()));
-            pstmt.executeUpdate();
+                String query = "insert into episode(wtn_id, epi_title, epi_thb, epi_file, created_at) values(?, ?, ?, ?, ?)";
+                PreparedStatement pstmt = connection.prepareStatement(query);
+                pstmt.setInt(1, webtoonId);
+                pstmt.setString(2, episodeTitle);
+                pstmt.setString(3, savedThumbnail);
+                pstmt.setString(4, savedFile);
+                pstmt.setString(5, String.valueOf(LocalDateTime.now()));
+                pstmt.executeUpdate();
 
-            query = "select epi_id from episode where wtn_id=? order by epi_id desc";
-            pstmt = connection.prepareStatement(query);
-            pstmt.setInt(1, webtoonId);
-            ResultSet rs = pstmt.executeQuery();
-            rs.next();
-            episodeId = rs.getInt("epi_id");
+                query = "select epi_id from episode where wtn_id=? order by epi_id desc";
+                pstmt = connection.prepareStatement(query);
+                pstmt.setInt(1, webtoonId);
+                ResultSet rs = pstmt.executeQuery();
+                rs.next();
+                episodeId = rs.getInt("epi_id");
 
-            pstmt.close();
-            connection.close();
+                pstmt.close();
+                connection.close();
 
 %>
-        <script>
-            alert("업로드에 성공했습니다.");
-            location.href="webtoon.jsp?id=<%=episodeId%>";
-        </script>
+                <script>
+                    alert("업로드에 성공했습니다.");
+                    location.href="webtoon.jsp?id=<%=episodeId%>";
+                </script>
 <%
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 %>
-
 
 
 

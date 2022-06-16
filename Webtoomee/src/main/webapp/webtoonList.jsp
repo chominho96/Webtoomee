@@ -59,7 +59,19 @@
     <div class="title-bar-menu">
         <div>
           <span>
+              <%
+                  if (isLogin) {
+              %>
               <a href="myPage.jsp"><img src="icons/user.png" /></a>
+              <%
+                  }
+                  else {
+              %>
+              <a href="login.jsp"><img src="icons/user.png" /></a>
+              <%
+                  }
+              %>
+
           </span>
             <div><%=loginUserName%><br /><%=userType%></div>
         </div>
@@ -69,7 +81,6 @@
                 if (isLogin) {
                     if (userType.equals("웹툰 작가")) {
 
-                    %>
                     %>
                     <span>
                         <a href="webtoonManagement.jsp"><img src="icons/pen-to-square-solid.svg" /></a>
@@ -313,7 +324,7 @@
                     case "daily":
                         genre = "일상";
                         break;
-                    case "comic":
+                    case "comedy":
                         genre = "개그";
                         break;
                     case "fantasy":

@@ -35,21 +35,21 @@
 
     // 쿼리 파라미터로 넘겨받은 회차 ID와, 평점을 확인합니다.
     Integer episodeId = Integer.parseInt(request.getParameter("id"));
-    String rating = null;
+    Integer rating = null;
     try {
-        rating = request.getParameter("star-1");
+        rating = Integer.parseInt(request.getParameter("star-1"));
     } catch (Exception ignore) { }
     try {
-        rating = request.getParameter("star-2");
+        rating = Integer.parseInt(request.getParameter("star-2"));
     } catch (Exception ignore) { }
     try {
-        rating = request.getParameter("star-3");
+        rating = Integer.parseInt(request.getParameter("star-3"));
     } catch (Exception ignore) { }
     try {
-        rating = request.getParameter("star-4");
+        rating = Integer.parseInt(request.getParameter("star-4"));
     } catch (Exception ignore) { }
     try {
-        rating = request.getParameter("star-5");
+        rating = Integer.parseInt(request.getParameter("star-5"));
     } catch (Exception ignore) { }
 
     /**
@@ -78,23 +78,7 @@
             pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, findUser.getUserId());
             pstmt.setInt(2, episodeId);
-            switch (rating) {
-                case "1":
-                    pstmt.setInt(3, 1);
-                    break;
-                case "2":
-                    pstmt.setInt(3, 2);
-                    break;
-                case "3":
-                    pstmt.setInt(3, 3);
-                    break;
-                case "4":
-                    pstmt.setInt(3, 4);
-                    break;
-                case "5":
-                    pstmt.setInt(3, 5);
-                    break;
-            }
+            pstmt.setInt(3, rating);
             pstmt.setString(4, String.valueOf(LocalDateTime.now()));
             pstmt.executeUpdate();
 %>
